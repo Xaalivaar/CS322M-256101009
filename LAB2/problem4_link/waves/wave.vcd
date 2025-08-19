@@ -1,0 +1,405 @@
+$date
+	Tue Aug 19 14:21:09 2025
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module tb_link_top $end
+$var wire 1 ! done $end
+$var reg 1 " clk $end
+$var reg 1 # rst $end
+$scope module dut $end
+$var wire 1 " clk $end
+$var wire 1 # rst $end
+$var wire 1 $ req $end
+$var wire 1 ! done $end
+$var wire 8 % data [7:0] $end
+$var wire 1 & ack $end
+$scope module u_master $end
+$var wire 1 " clk $end
+$var wire 1 # rst $end
+$var wire 1 & ack $end
+$var parameter 32 ' BURST_BYTES $end
+$var parameter 2 ( M0_IDLE $end
+$var parameter 2 ) M1_REQ $end
+$var parameter 2 * M2_WAITACKLOW $end
+$var parameter 2 + M3_CLEANUP $end
+$var reg 2 , cnt [1:0] $end
+$var reg 2 - cnt_n [1:0] $end
+$var reg 8 . data [7:0] $end
+$var reg 8 / data_n [7:0] $end
+$var reg 1 ! done $end
+$var reg 1 0 done_n $end
+$var reg 1 $ req $end
+$var reg 1 1 req_n $end
+$var reg 2 2 state [1:0] $end
+$var reg 2 3 state_n [1:0] $end
+$var integer 32 4 i [31:0] $end
+$upscope $end
+$scope module u_slave $end
+$var wire 1 " clk $end
+$var wire 8 5 data_in [7:0] $end
+$var wire 1 $ req $end
+$var wire 1 6 req_rise $end
+$var wire 1 # rst $end
+$var parameter 32 7 ACK_HOLD $end
+$var parameter 1 8 S0_IDLE $end
+$var parameter 1 9 S1_ACK $end
+$var reg 1 & ack $end
+$var reg 1 : ack_n $end
+$var reg 2 ; hold [1:0] $end
+$var reg 2 < hold_n [1:0] $end
+$var reg 8 = last_byte [7:0] $end
+$var reg 8 > last_byte_n [7:0] $end
+$var reg 1 ? req_q $end
+$var reg 1 @ state $end
+$var reg 1 A state_n $end
+$scope function clog2 $end
+$var integer 32 B i [31:0] $end
+$var integer 32 C value [31:0] $end
+$upscope $end
+$upscope $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+19
+08
+b10 7
+b11 +
+b10 *
+b1 )
+b0 (
+b100 '
+$end
+#0
+$dumpvars
+bx C
+bx B
+xA
+x@
+x?
+bx >
+bx =
+bx <
+bx ;
+x:
+x6
+bx 5
+b100 4
+b0 3
+bx 2
+01
+00
+bx /
+bx .
+bx -
+bx ,
+x&
+bx %
+x$
+1#
+0"
+x!
+$end
+#5000
+06
+11
+b1 3
+b10100000 /
+b0 -
+b0 >
+0:
+b0 <
+0A
+b0 %
+b0 .
+b0 5
+0!
+0$
+b0 ,
+b0 2
+0?
+b0 =
+0&
+b0 ;
+0@
+1"
+#10000
+0"
+#15000
+1"
+#20000
+0"
+#25000
+0#
+1"
+#30000
+0"
+#35000
+b1 <
+b10100000 >
+16
+1:
+1A
+11
+b10100000 %
+b10100000 .
+b10100000 5
+1$
+b1 2
+1"
+#40000
+0"
+#45000
+06
+b10 3
+01
+b0 <
+1:
+1?
+b10100000 =
+1&
+b1 ;
+1@
+1"
+#50000
+0"
+#55000
+0A
+0:
+b0 ;
+0$
+b10 2
+1"
+#60000
+0"
+#65000
+11
+b1 3
+b10100001 /
+b1 -
+0?
+0&
+0@
+1"
+#70000
+0"
+#75000
+b1 <
+b10100001 >
+16
+1:
+1A
+11
+b10100001 %
+b10100001 .
+b10100001 5
+1$
+b1 ,
+b1 2
+1"
+#80000
+0"
+#85000
+06
+b10 3
+01
+b0 <
+1:
+1?
+b10100001 =
+1&
+b1 ;
+1@
+1"
+#90000
+0"
+#95000
+0A
+0:
+b0 ;
+0$
+b10 2
+1"
+#100000
+0"
+#105000
+11
+b1 3
+b10100010 /
+b10 -
+0?
+0&
+0@
+1"
+#110000
+0"
+#115000
+b1 <
+b10100010 >
+16
+1:
+1A
+11
+b10100010 %
+b10100010 .
+b10100010 5
+1$
+b10 ,
+b1 2
+1"
+#120000
+0"
+#125000
+06
+b10 3
+01
+b0 <
+1:
+1?
+b10100010 =
+1&
+b1 ;
+1@
+1"
+#130000
+0"
+#135000
+0A
+0:
+b0 ;
+0$
+b10 2
+1"
+#140000
+0"
+#145000
+11
+b1 3
+b10100011 /
+b11 -
+0?
+0&
+0@
+1"
+#150000
+0"
+#155000
+b1 <
+b10100011 >
+16
+1:
+1A
+11
+b10100011 %
+b10100011 .
+b10100011 5
+1$
+b11 ,
+b1 2
+1"
+#160000
+0"
+#165000
+06
+b10 3
+01
+b0 <
+1:
+1?
+b10100011 =
+1&
+b1 ;
+1@
+1"
+#170000
+0"
+#175000
+0A
+0:
+b0 ;
+0$
+b10 2
+1"
+#180000
+0"
+#185000
+10
+b11 3
+0?
+0&
+0@
+1"
+#190000
+0"
+#195000
+b0 -
+b0 3
+00
+1!
+b11 2
+1"
+#200000
+0"
+#205000
+11
+b1 3
+b10100000 /
+0!
+b0 ,
+b0 2
+1"
+#210000
+0"
+#215000
+b1 <
+b10100000 >
+16
+1:
+1A
+11
+b10100000 %
+b10100000 .
+b10100000 5
+1$
+b1 2
+1"
+#220000
+0"
+#225000
+06
+b10 3
+01
+b0 <
+1:
+1?
+b10100000 =
+1&
+b1 ;
+1@
+1"
+#230000
+0"
+#235000
+0A
+0:
+b0 ;
+0$
+b10 2
+1"
+#240000
+0"
+#245000
+11
+b1 3
+b10100001 /
+b1 -
+0?
+0&
+0@
+1"
