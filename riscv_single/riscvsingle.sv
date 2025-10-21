@@ -380,7 +380,7 @@ module imem(input  logic [31:0] a,
   logic [31:0] RAM[63:0];  // explicitly define ascending order
 
   initial
-      $readmemh("rvx10.txt",RAM);
+      $readmemh("riscvtest.txt",RAM);
 
   assign rd = RAM[a[31:2]]; // word aligned
 endmodule
@@ -410,8 +410,8 @@ module alu(input  logic [31:0] a, b,
   assign sum = a + condinvb + alucontrol[0];
   assign isAddSub = ~alucontrol[2] & ~alucontrol[1] |
                     ~alucontrol[1] & alucontrol[0];
-  assign ua = $unsigned(a);         // for unsigned instructions
-  assign ub = $unsigned(b);         // for unsigned instructions
+  assign sa = $signed(a);         // for unsigned instructions
+  assign sb = $signed(b);         // for unsigned instructions
   assign shift_amount = b[4:0];     // for shift instructions
   assign slt_sign_bit = sum[31];    // for shift instructions
 
@@ -428,13 +428,13 @@ module alu(input  logic [31:0] a, b,
 
   always_comb
     case (alucontrol)
-      5'b10000: result =  a & ~b;                                                       //   andn
-      5'b10001: result =  a | ~b;                                                       //   orn 
-      5'b10010: result =  ~(a ^ b);                                                     //   xnor
-      5'b10011: result =  (a < b) ? a : b;                                              //   min 
-      5'b10100: result =  (a > b) ? a : b;                                              //   max 
-      5'b10101: result =  (ua < ub) ? a : b;                                            //   minu
-      5'b10110: result =  (ua > ub) ? a : b;                                            //   maxu
+      5'b10000: result = a & ~b;                                                       //   andn
+      5'b10001: result = a | ~b;                                                       //   orn 
+      5'b10010: result = ~(a ^ b);                                                     //   xnor
+      5'b10011: result = (sa < sb) ? a : b;                                            //   min 
+      5'b10100: result = (sa > sb) ? a : b;                                            //   max 
+      5'b10101: result = (a < b) ? a : b;                                              //   minu
+      5'b10110: result = (a > b) ? a : b;                                              //   maxu
       5'b11000: result = (shift_amount == 0) ? a : {a_low_31_rol, a_high_1_rol};        // rol
       5'b11001: result = (shift_amount == 0) ? a : {a_low_1_ror, a_high_31_ror};        // ror 
       5'b10111: result = (a == 32'h80000000) ? 32'h80000000 : (a_sign_bit ? -a : a);    // abs 
