@@ -26,7 +26,7 @@ Follow these steps to build and run the simulation with **Icarus Verilog**.
 ---
 
 ## Directory Layout
-
+```
 cpu_tb
 ├── docs
 │   ├── ENCODINGS.md
@@ -73,7 +73,7 @@ cpu_tb
         ├── decoder.png
         ├── dmem.png
         └── imem.png
-
+```
 ---
 
 ## Build & Run (Terminal)
