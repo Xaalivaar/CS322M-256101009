@@ -27,7 +27,53 @@ Follow these steps to build and run the simulation with **Icarus Verilog**.
 
 ## Directory Layout
 
-![alt text](image.png)
+cpu_tb
+├── docs
+│   ├── ENCODINGS.md
+│   └── TESTPLAN.md
+├── image.png
+├── Makefile
+├── README.md
+├── riscvsingle.sv
+├── simsuccessfulRV321.png
+├── single.vcd
+├── tests
+│   ├── 25to100.txt
+│   ├── abs.s
+│   ├── abs.txt
+│   ├── andn.s
+│   ├── andn.txt
+│   ├── max.s
+│   ├── max.txt
+│   ├── maxu.s
+│   ├── maxu.txt
+│   ├── min.s
+│   ├── min.txt
+│   ├── minu.s
+│   ├── minu.txt
+│   ├── orn.s
+│   ├── orn.txt
+│   ├── riscvtest.s
+│   ├── riscvtest.txt
+│   ├── rol.s
+│   ├── rol.txt
+│   ├── ror.s
+│   ├── ror.txt
+│   ├── xnor.s
+│   └── xnor.txt
+└── waves
+    └── RV321-postImplement
+        ├── alu1.png
+        ├── alu2.png
+        ├── alu3.png
+        ├── aluDecoder.png
+        ├── datapath1.png
+        ├── datapath2.png
+        ├── datapath3.png
+        ├── decoder.png
+        ├── dmem.png
+        └── imem.png
+
 ---
 
 ## Build & Run (Terminal)
