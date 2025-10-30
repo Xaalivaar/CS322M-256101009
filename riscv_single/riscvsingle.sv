@@ -224,18 +224,26 @@ module aludec(input  logic       opb5,
 
   logic  RtypeSub;
   assign RtypeSub = funct7b5b1b0[2] & opb5;           // TRUE for R-type subtract instruction
+  logic [4:0] RVX10ins;
   assign RVX10ins =  { funct7b5b1b0[1:0], funct3 };   // A 5 bits long field to denote a particular RVX-10 instruction
 
   always_comb begin
     case (ALUOp)
-        2'b00:    ALUControl = 5'b00000; // addition
-        2'b01:    ALUControl = 5'b00001; // subtraction
-        2'b10:    case (funct3) // R‑type or I‑type ALU
+        2'b00:    ALUControl = 5'b00000; // addition (used for lw/sw)
+        2'b01:    ALUControl = 5'b00001; // subtraction (used for branches)
+        2'b10:    // R-type or I-type ALU instructions
+                  case (funct3)
                       3'b000:  ALUControl = RtypeSub ? 5'b00001 : 5'b00000; // sub / add, addi
+                      3'b001:  ALUControl = 5'b00110; // sll, slli
                       3'b010:  ALUControl = 5'b00101; // slt, slti
+                      3'b101:  // srli / srai or srl / sra (distinguish by funct7[5] when R-type)
+                               // For I-type SRLI/SRAI the shift-op encoding uses funct7[5] to differentiate,
+                               // but for simplicity both map to logical right shift control which is 5'b00111
+                               // (if you later implement arithmetic right shift, detect funct7[5] here)
+                               ALUControl = 5'b00111; // srl / srli  (srai not implemented separately here)
                       3'b110:  ALUControl = 5'b00011; // or, ori
                       3'b111:  ALUControl = 5'b00010; // and, andi
-                      default: ALUControl = 5'b00xxx; // unknown
+                      default: ALUControl = 5'bxxxxx; // unknown / undefined funct3
                   endcase
         2'b11:    case (RVX10ins)
                       5'b00000: ALUControl = 5'b10000; // andn
@@ -254,6 +262,7 @@ module aludec(input  logic       opb5,
     endcase
   end
 endmodule
+
 
 module datapath(input  logic        clk, reset,
                 input  logic [1:0]  ResultSrc, 
@@ -380,7 +389,7 @@ module imem(input  logic [31:0] a,
   logic [31:0] RAM[63:0];  // explicitly define ascending order
 
   initial
-      $readmemh("riscvtest.txt",RAM);
+      $readmemh("abs.txt",RAM);
 
   assign rd = RAM[a[31:2]]; // word aligned
 endmodule
@@ -397,60 +406,67 @@ module dmem(input  logic        clk, we,
     if (we) RAM[a[31:2]] <= wd;
 endmodule
 
-module alu(input  logic [31:0] a, b,
-           input  logic [4:0]  alucontrol,
-           output logic [31:0] result,
-           output logic        zero);
+module alu(
+  input  logic [31:0] a, b,
+  input  logic [4:0]  alucontrol,
+  output logic [31:0] result,
+  output logic        zero
+);
 
   logic [31:0] condinvb, sum;
   logic        v;              // overflow
   logic        isAddSub;       // true when is add or subtract operation
+  logic signed [31:0] sa, sb;
+  logic [4:0]  shift_amount;
+  logic        slt_sign_bit;
+  logic [30:0] a_low_31_rol, a_high_31_ror;
+  logic        a_high_1_rol, a_low_1_ror, a_sign_bit;
 
   assign condinvb = alucontrol[0] ? ~b : b;
   assign sum = a + condinvb + alucontrol[0];
   assign isAddSub = ~alucontrol[2] & ~alucontrol[1] |
                     ~alucontrol[1] & alucontrol[0];
-  assign sa = $signed(a);         // for unsigned instructions
-  assign sb = $signed(b);         // for unsigned instructions
-  assign shift_amount = b[4:0];     // for shift instructions
-  assign slt_sign_bit = sum[31];    // for shift instructions
 
-  // For rol (Rotate Left):
-  assign a_low_31_rol = a[30:0];    // Part-select
-  assign a_high_1_rol = a[31];      // Bit-select
+  assign sa = $signed(a);
+  assign sb = $signed(b);
+  assign shift_amount = b[4:0];
+  assign slt_sign_bit = sum[31];
 
-  // For ror (Rotate Right):
-  assign a_low_1_ror = a[0];        // Bit-select
-  assign a_high_31_ror = a[31:1];   // Part-select
-
-  // For abs (Absolute Value):
-  assign a_sign_bit = a[31];        // Bit-select
+  // For rotate and abs
+  assign a_low_31_rol = a[30:0];
+  assign a_high_1_rol = a[31];
+  assign a_low_1_ror = a[0];
+  assign a_high_31_ror = a[31:1];
+  assign a_sign_bit = a[31];
 
   always_comb
     case (alucontrol)
-      5'b10000: result = a & ~b;                                                       //   andn
-      5'b10001: result = a | ~b;                                                       //   orn 
-      5'b10010: result = ~(a ^ b);                                                     //   xnor
-      5'b10011: result = (sa < sb) ? a : b;                                            //   min 
-      5'b10100: result = (sa > sb) ? a : b;                                            //   max 
-      5'b10101: result = (a < b) ? a : b;                                              //   minu
-      5'b10110: result = (a > b) ? a : b;                                              //   maxu
-      5'b11000: result = (shift_amount == 0) ? a : {a_low_31_rol, a_high_1_rol};        // rol
-      5'b11001: result = (shift_amount == 0) ? a : {a_low_1_ror, a_high_31_ror};        // ror 
-      5'b10111: result = (a == 32'h80000000) ? 32'h80000000 : (a_sign_bit ? -a : a);    // abs 
+      5'b10000: result = a & ~b;                        // andn
+      5'b10001: result = a | ~b;                        // orn 
+      5'b10010: result = ~(a ^ b);                      // xnor
+      5'b10011: result = (sa < sb) ? a : b;             // min 
+      5'b10100: result = (sa > sb) ? a : b;             // max 
+      5'b10101: result = (a < b) ? a : b;               // minu
+      5'b10110: result = (a > b) ? a : b;               // maxu
+      //rol
+      5'b11000: result = (a << shift_amount) | (a >> (32 - shift_amount));
+      //ror
+      5'b11001: result = (a >> shift_amount) | (a << (32 - shift_amount));
+      5'b10111: result = (a == 32'h80000000) ? 32'h80000000 :
+                          (a_sign_bit ? -a : a);         // abs 
 
-      5'b00000:  result = sum;                  //    add
-      5'b00001:  result = sum;                  //    subtract
-      5'b00010:  result = a & b;                //    and
-      5'b00011:  result = a | b;                //    or
-      5'b00100:  result = a ^ b;                //    xor
-      5'b00101:  result = slt_sign_bit ^ v;     //  slt 
-      5'b00110:  result = a << shift_amount;    //  sll
-      5'b00111:  result = a >> shift_amount;    //  srl
+      5'b00000: result = sum;                           // add
+      5'b00001: result = sum;                           // subtract
+      5'b00010: result = a & b;                         // and
+      5'b00011: result = a | b;                         // or
+      5'b00100: result = a ^ b;                         // xor
+      5'b00101: result = slt_sign_bit ^ v;              // slt 
+      5'b00110: result = a << shift_amount;             // sll
+      5'b00111: result = a >> shift_amount;             // srl
       default: result = 32'bx;
     endcase
 
   assign zero = (result == 32'b0);
   assign v = ~(alucontrol[0] ^ a[31] ^ b[31]) & (a[31] ^ sum[31]) & isAddSub;
-  
+
 endmodule

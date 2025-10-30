@@ -18,7 +18,7 @@ Follow these steps to build and run the simulation with **Icarus Verilog**.
 ## Requirements
 
 - **Icarus Verilog** (iverilog / vvp)
-  - Ubuntu/Debian: `sudo apt-get install iverilog`
+  - Ubuntu/Debian: `sudo apt-get install iverilog make`
   - macOS (Homebrew): `brew install icarus-verilog`
   - Windows: install from the official site or MSYS2; ensure `iverilog` and `vvp` are on **PATH**.
 - (Optional) **GTKWave** for viewing waveforms: `sudo apt-get install gtkwave` / `brew install gtkwave`
@@ -27,48 +27,20 @@ Follow these steps to build and run the simulation with **Icarus Verilog**.
 
 ## Directory Layout
 
-Put the three files in one folder (example):
-```
-riscv_single/
-├── riscvsingle.sv
-├── riscvtest.txt
-└── riscvtest.s        (optional)
-```
-
-> **Important:** The simulation reads `riscvtest.txt` using a **relative path**. Run the simulator **from the folder** that contains the file (or edit the path inside `riscvsingle.sv`).
-
+![alt text](image.png)
 ---
 
 ## Build & Run (Terminal)
 
 ### Linux / macOS
-```bash
-cd /path/to/riscv_single
+<ol>
+  <li>  For testing an instruction - put its path in $readmem
+  <li>  make run - for generating vvp and vcd files
+  <li>  make waves - for using gtkwaves to visualise waves
+</ol>
+<br> <hr>
 
-# Compile (enable SystemVerilog-2012 support)
-iverilog -g2012 -o cpu_tb riscvsingle.sv
-
-# Run
-vvp cpu_tb
-```
-
-### Windows (PowerShell or CMD)
-```bat
-cd C:\path\to\riscv_single
-iverilog -g2012 -o cpu_tb riscvsingle.sv
-vvp cpu_tb
-```
-
-**Expected console output**
-```
-Simulation succeeded
-```
-
----
-
-## Makefile (optional)
-
-You can also use the included `Makefile`:
+Use the included `Makefile`:
 
 ```bash
 make run        # build + run
@@ -82,28 +54,7 @@ If you prefer not to use Make, just run the iverilog/vvp commands shown above.
 
 ## Waveforms (Optional, with GTKWave)
 
-The testbench is set up to dump `wave.vcd`. To open it:
-
-```bash
-# after running the simulation:
-gtkwave wave.vcd
-```
-
-If you don’t see a VCD file, ensure the following block exists inside `module testbench;` in `riscvsingle.sv`:
-```systemverilog
-initial begin
-  $dumpfile("wave.vcd");
-  $dumpvars(0, testbench);
-end
-```
-
-Rebuild and run again to regenerate the VCD.
-
----
-
-## Notes for Students
-
-- This is a **single‑cycle** RV32I subset implementation aimed at instructional use.
+- This is a **single‑cycle** RV32I subset implementation aimed at instructional use with RVX10 custom instructions.
 - The provided program image exercises **ALU ops**, **load/store**, and **branches**.
 - Success criterion: a store of value **25** to memory address **100**, which triggers the **“Simulation succeeded”** message from the testbench.
 
