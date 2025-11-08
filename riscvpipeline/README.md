@@ -3,6 +3,8 @@
 This repo contains a **pipelined RISC‑V (RV32I) CPU** and a test programs.
 Follow these steps to build and run the simulation with **Icarus Verilog**.
 
+Please find the REPORT.md in docs subdirectory
+
 ---
 
 ## Files
