@@ -21,6 +21,7 @@ see what is being stored where.
 <hr>
 
 <b> rv32I </b><br>
+
 ![alt text](image.png)
 ![alt text](image-1.png)
 ![alt text](image-2.png)
@@ -29,6 +30,7 @@ see what is being stored where.
 <hr>
 
 <b>andn</b>  <br>
+
 ![alt text](image-5.png)
 ![alt text](image-6.png)
 ![alt text](image-7.png)
@@ -38,6 +40,7 @@ see what is being stored where.
 <hr>
 
 <b>maxu</b>  <br>
+
 ![alt text](image-11.png)
 ![alt text](image-12.png)
 ![alt text](image-13.png)
@@ -47,6 +50,7 @@ see what is being stored where.
 <hr>
 
 <b> minu  </b><br>
+
 ![alt text](image-17.png)
 ![alt text](image-18.png)
 ![alt text](image-19.png)
@@ -56,6 +60,7 @@ see what is being stored where.
 <hr>
 
 <b> ror    </b><br>
+
 ![alt text](image-23.png)
 ![alt text](image-24.png)
 ![alt text](image-25.png)
@@ -65,6 +70,7 @@ see what is being stored where.
 <hr>
 
 <b> abs </b><br>
+
 ![alt text](image-29.png)
 ![alt text](image-30.png)
 ![alt text](image-31.png)
@@ -74,6 +80,7 @@ see what is being stored where.
 <hr>
 
 <b> max   </b><br>
+
 ![alt text](image-47.png)
 ![alt text](image-36.png)
 ![alt text](image-38.png)
@@ -82,7 +89,8 @@ see what is being stored where.
 ![alt text](image-40.png)
 <hr>
 
-min   
+<b>min</b><br>
+
 ![alt text](image-41.png)
 ![alt text](image-42.png)
 ![alt text](image-43.png)
@@ -92,6 +100,7 @@ min
 <hr>
 
 <b> orn   </b><br>
+
 ![alt text](image-48.png)
 ![alt text](image-49.png)
 ![alt text](image-50.png)
@@ -101,6 +110,7 @@ min
 <hr>
 
 <b> rol </b><br>
+
 ![alt text](image-54.png)
 ![alt text](image-56.png)
 ![alt text](image-55.png)
@@ -110,6 +120,7 @@ min
 <hr>
 
 <b> xnor </b><br>
+
 ![alt text](image-60.png)
 ![alt text](image-62.png)
 ![alt text](image-61.png)
